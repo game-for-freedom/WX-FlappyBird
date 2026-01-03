@@ -26,10 +26,9 @@ export class Director {
     }
 
     birdsEvent() {
-        for (let i = 0; i <= 2; i++) {
-            this.dataStore.get('birds').y[i] =
-                this.dataStore.get('birds').birdsY[i];
-        }
+        // 使用静态图片后，直接更新单个鸟的位置
+        this.dataStore.get('birds').y =
+            this.dataStore.get('birds').birdY;
         this.dataStore.get('birds').time = 0;
     }
 
@@ -54,16 +53,16 @@ export class Director {
         const score = this.dataStore.get('score');
 
 
-        if (birds.birdsY[0] + birds.birdsHeight[0] >= land.y) {
+        if (birds.birdY + birds.birdHeight >= land.y) {
             this.isGameOver = true;
             return;
         }
 
         const birdsBorder = {
-            top: birds.y[0],
-            bottom: birds.birdsY[0] + birds.birdsHeight[0],
-            left: birds.birdsX[0],
-            right: birds.birdsX[0] + birds.birdsWidth[0]
+            top: birds.y,
+            bottom: birds.birdY + birds.birdHeight,
+            left: birds.birdX,
+            right: birds.birdX + birds.birdWidth
         };
 
         const length = pencils.length;
@@ -84,7 +83,7 @@ export class Director {
         }
 
         //+1
-        if (birds.birdsX[0] > pencils[0].x + pencils[0].width
+        if (birds.birdX > pencils[0].x + pencils[0].width
             && score.isScore) {
             wx.vibrateShort({
                 success: function () {
